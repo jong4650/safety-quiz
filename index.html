@@ -155,7 +155,7 @@ body{font-family:'Noto Sans KR',sans-serif;min-height:100vh;overflow-x:hidden}
 @keyframes giftPop{0%{transform:scale(0) rotate(-15deg);opacity:0}100%{transform:scale(1) rotate(0);opacity:1}}
 .gift-img-wrap img{max-width:150px;max-height:150px;object-fit:contain;filter:drop-shadow(0 6px 12px rgba(255,100,150,0.4))}
 .gift-name-badge{display:inline-block;background:#ff6b9d;color:#fff;font-size:15px;font-weight:900;padding:7px 22px;border:3px solid #ff3d7f;box-shadow:3px 3px 0 #cc2060;letter-spacing:1px;margin-bottom:6px}
-.gift-prob{font-size:11px;color:#bbb}
+
 .gift-notice-box{background:#fff9e6;border:3px solid #ffd600;box-shadow:3px 3px 0 #cc8800;padding:12px 14px;margin-bottom:12px;text-align:center;font-size:13px;font-weight:700;color:#665500;line-height:1.7;word-break:keep-all}
 .clrilgu{height:90px;object-fit:contain;filter:drop-shadow(0 6px 10px rgba(255,100,150,0.4));animation:cdance 0.6s ease-in-out infinite alternate;margin-bottom:8px}
 @keyframes cdance{from{transform:rotate(-5deg) scale(1)}to{transform:rotate(5deg) scale(1.06)}}
@@ -217,7 +217,7 @@ body{font-family:'Noto Sans KR',sans-serif;min-height:100vh;overflow-x:hidden}
       <div class="giftdesc">퀴즈를 <strong>1개 이상</strong> 클리어하면<br>랜덤으로 선물이 결정돼요!<br><strong>안내데스크에서 선물을 받아가세요</strong></div>
     </div>
     <div class="recvbanner" id="recvBanner">
-      <div class="recvbanner-top">&#10003; 선물 수령 완료! 다른 구역도 계속 도전할 수 있어요!</div>
+      <div class="recvbanner-top">&#10003; 선물 수령이 완료되었어요! 오늘 이벤트 참여 감사해요!</div>
       <div class="recvbanner-gift" id="recvGiftArea"></div>
     </div>
   </div>
@@ -512,7 +512,7 @@ function showClear(){
       '<div style="font-size:12px;font-weight:700;color:#888;letter-spacing:2px;margin-bottom:12px">&#127873; 당신의 선물은...</div>'+
       '<div class="gift-img-wrap"><img src="'+IMGS[gObj.key]+'" alt="'+gObj.name+'"></div>'+
       '<div class="gift-name-badge">'+gObj.name+' 당첨!</div><br>'+
-      '<div class="gift-prob">당첨 확률 '+gObj.prob+'%</div>'+
+      
       '</div>'+
       '<div class="gift-notice-box">이 화면을 <strong>안내데스크</strong>에 보여주시면<br>선물을 받으실 수 있어요!</div>'+
       '<div class="btnrow"><button class="gobtn" id="giftBtn" style="flex:1;padding:13px;font-size:14px">&#127873; 선물 수령 확인</button>'+
@@ -522,7 +522,7 @@ function showClear(){
       '<img src="'+IMGS[gObj.key]+'" style="max-width:100px;max-height:100px;object-fit:contain;filter:drop-shadow(0 4px 8px rgba(255,100,150,0.3))"><br>'+
       '<div style="margin-top:8px;font-size:14px;font-weight:900;color:#4ecb8d">&#10003; '+gObj.name+' 수령 완료!</div>'+
       '</div>'+
-      '<div class="recvdbox">오늘 선물을 이미 수령하셨어요!<br>다른 구역에도 도전해보세요!</div>'+
+      '<div class="recvdbox">오늘 이벤트 선물 수령이 완료되었어요!</div>'+
       '<button class="ghbtn" id="homeBtn2">&#8592; 홈으로</button>';
   }
   document.getElementById("qContent").innerHTML=
