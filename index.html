@@ -498,8 +498,9 @@ document.getElementById("infoPopup").addEventListener("click",function(e){
   if(e.target===this) closePopup();
 });
 document.getElementById("popupStartBtn").addEventListener("click",function(){
+  var zKey = pendingZone;
   closePopup();
-  enterZone(pendingZone);
+  if(zKey) enterZone(zKey);
 });
 
 function enterZone(zKey){
