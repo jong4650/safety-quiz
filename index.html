@@ -244,7 +244,7 @@ body{font-family:'Noto Sans KR',sans-serif;min-height:100vh;overflow-x:hidden}
       <div class="popup-sub">연령대별 인원수를 입력하고 퀴즈를 시작하세요</div>
 
       <div class="info-section">
-        <div class="info-label">성별 <span>(필수 1개 선택)</span></div>
+        <div class="info-label">대표자 성별 <span>(1개 선택)</span></div>
         <div class="gender-row">
           <button class="gender-btn" data-gender="남">&#128104; 남성</button>
           <button class="gender-btn" data-gender="여">&#128105; 여성</button>
@@ -292,7 +292,7 @@ body{font-family:'Noto Sans KR',sans-serif;min-height:100vh;overflow-x:hidden}
 (function(){
 "use strict";
 var IMGS = JSON.parse(document.getElementById("imgData").textContent);
-var SHEETS_URL = "https://script.google.com/macros/s/AKfycbzMKkIl3n8SHkCirz5HPoBmiMgjfaW-nHYTcBIYZvez179Q8mUaUPpqjLuDS5Usy9Y1Bg/exec";
+var SHEETS_URL = "https://script.google.com/macros/s/AKfycbwedbtjEE_N1_AGgWfP8IOmsPWNfEsxQENQ0XbACg8cNAxQsOemeqzAES7LI0ecp4-xbg/exec";
 
 var GIFTS = [
   {key:"gift_sticker", name:"일구 스티커",    prob:30},
@@ -600,14 +600,19 @@ function showClear(){
   var ageStr=getAgeStr();
   var totalCount=getTotalCount();
 
-  sendToSheets({
-    dt: today.toLocaleString("ko-KR"),
-    zone: z.name,
-    gender: selGender,
-    ages: ageStr,
-    totalCount: totalCount,
-    gift: gObj.name
-  });
+  // 최초 1회만 전송 (선물 수령 확인 버튼으로 재진입 시 중복 방지)
+  if(!STATE.sent){
+    STATE.sent = true; save();
+    sendToSheets({
+      dt: today.toLocaleString("ko-KR"),
+      zone: z.name,
+      gender: selGender,
+      ages: ageStr,
+      totalCount: totalCount,
+      gift: gObj.name,
+      alreadySent: false
+    });
+  }
 
   var actionHtml="";
   if(!STATE.gift){
