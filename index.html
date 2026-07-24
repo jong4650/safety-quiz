@@ -61,6 +61,10 @@ body{font-family:'Noto Sans KR',sans-serif;min-height:100vh;overflow-x:hidden}
 .gender-btn{flex:1;padding:10px 0;background:#fff;border:2px solid #e8d5f0;font-size:14px;font-weight:700;color:#2d2d5e;cursor:pointer;text-align:center;transition:all 0.12s;font-family:'Noto Sans KR',sans-serif;box-shadow:2px 2px 0 #ddd}
 .gender-btn:hover{border-color:#ff6b9d;background:#fff5f9}
 .gender-btn.sel{border-color:#ff6b9d;background:#ff6b9d;color:#fff;box-shadow:3px 3px 0 #cc2060}
+.type-row{display:flex;gap:8px;flex-wrap:wrap}
+.type-btn{flex:1;min-width:80px;padding:9px 6px;background:#fff;border:2px solid #e8d5f0;font-size:13px;font-weight:700;color:#2d2d5e;cursor:pointer;text-align:center;transition:all 0.12s;font-family:'Noto Sans KR',sans-serif;box-shadow:2px 2px 0 #ddd}
+.type-btn:hover{border-color:#6699ff;background:#f0f4ff}
+.type-btn.sel{border-color:#6699ff;background:#6699ff;color:#fff;box-shadow:3px 3px 0 #3355cc}
 .age-section-title{font-size:11px;font-weight:900;color:#888;letter-spacing:1px;margin:10px 0 5px;padding:3px 8px;background:#f8f8ff;border-left:3px solid #6699ff}
 /* 연령대별 인원수 입력 테이블 */
 .age-table{width:100%;border-collapse:collapse;margin-bottom:2px}
@@ -252,6 +256,15 @@ body{font-family:'Noto Sans KR',sans-serif;min-height:100vh;overflow-x:hidden}
       </div>
 
       <div class="info-section">
+        <div class="info-label">체험객 유형 <span>(1개 선택)</span></div>
+        <div class="type-row">
+          <button class="type-btn" data-type="내국인">내국인</button>
+          <button class="type-btn" data-type="외국인">외국인</button>
+          <button class="type-btn" data-type="장애인">장애인</button>
+        </div>
+      </div>
+
+      <div class="info-section">
         <div class="info-label">연령대별 인원수 <span>(해당 인원수 입력, 총 1명 이상)</span></div>
         <div class="age-section-title">어린이&#183;청소년</div>
         <table class="age-table" id="ageTable1"></table>
@@ -292,7 +305,7 @@ body{font-family:'Noto Sans KR',sans-serif;min-height:100vh;overflow-x:hidden}
 (function(){
 "use strict";
 var IMGS = JSON.parse(document.getElementById("imgData").textContent);
-var SHEETS_URL = "https://script.google.com/macros/s/AKfycbwedbtjEE_N1_AGgWfP8IOmsPWNfEsxQENQ0XbACg8cNAxQsOemeqzAES7LI0ecp4-xbg/exec";
+var SHEETS_URL = "https://script.google.com/macros/s/AKfycbzB0D0E1UPoPZg5sMmY-tq51ZUJpcqu3Ab4SYuPqszBFdqlt-7UNT2JmdVYlFpelavBHw/exec";
 
 var GIFTS = [
   {key:"gift_sticker", name:"일구 스티커",    prob:30},
@@ -374,7 +387,7 @@ try{
 function save(){STATE.date=todayKey();try{localStorage.setItem("iq_v9",JSON.stringify(STATE));}catch(e){}}
 
 var CZ=null, CQ=0, ANS=false, WRONG=0;
-var selGender="", ageCounts={}, pendingZone=null;
+var selGender="", selType="", ageCounts={}, pendingZone=null;
 
 // 연령대별 인원수 테이블 생성
 function buildAgeTables(){
@@ -421,7 +434,7 @@ function updateTotal(){
   var total=0;
   AGE_GROUPS.forEach(function(ag){total+=ageCounts[ag.id]||0;});
   document.getElementById("totalDisplay").textContent="총 "+total+"명";
-  document.getElementById("popupStartBtn").disabled=(!selGender||total===0);
+  document.getElementById("popupStartBtn").disabled=(!selGender||!selType||total===0);
 }
 
 function getTotalCount(){
@@ -468,7 +481,7 @@ function updateHome(){
 
 function openPopup(zKey){
   pendingZone=zKey;
-  selGender="";
+  selGender=""; selType="";
   AGE_GROUPS.forEach(function(ag){
     ageCounts[ag.id]=0;
     var inp=document.getElementById("ac_"+ag.id);
@@ -490,6 +503,13 @@ document.querySelectorAll(".gender-btn").forEach(function(btn){
   btn.addEventListener("click",function(){
     selGender=this.dataset.gender;
     document.querySelectorAll(".gender-btn").forEach(function(b){b.classList.remove("sel");});
+    this.classList.add("sel"); updateTotal();
+  });
+});
+document.querySelectorAll(".type-btn").forEach(function(btn){
+  btn.addEventListener("click",function(){
+    selType=this.dataset.type;
+    document.querySelectorAll(".type-btn").forEach(function(b){b.classList.remove("sel");});
     this.classList.add("sel"); updateTotal();
   });
 });
@@ -607,6 +627,7 @@ function showClear(){
       dt: today.toLocaleString("ko-KR"),
       zone: z.name,
       gender: selGender,
+      visitorType: selType,
       ages: ageStr,
       totalCount: totalCount,
       gift: gObj.name,
